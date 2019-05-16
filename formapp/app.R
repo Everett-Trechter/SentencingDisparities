@@ -25,15 +25,17 @@ writeToSheet <- function(input){
 
 #server
 server <- function(input, output, session){
-  observeEvent(input$loginButton,{
+  eventReactive(input$loginButton,{
     loginToGoogle()
     sheet <-getGoogleSheet()
+    output$words <- sheet$sheet_title
     })
 }
 
 
 #ui
 ui <- fluidPage(
+  tags$head(tags$script(src = "message-handler.js")),
 #title
   titlePanel("Data Entry Form for Data Sentencing Project"),
   sidebarLayout(
