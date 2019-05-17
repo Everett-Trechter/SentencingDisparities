@@ -30,6 +30,7 @@ writeToSheet <- function(input){
 server <- function(input, output){
   text_reactive <- eventReactive(input$loginButton,{
     sheet <- getGoogleSheet()
+    gs_edit_cells(sheet,ws=1, input = data.frame(1,2,3))
     return(sheet$sheet_title)
    })
 
