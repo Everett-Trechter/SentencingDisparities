@@ -4,17 +4,20 @@ library(googlesheets)
 
   options("googlesheets.webapp.client_id" = '4205699659-mjppbfcc54tpt44qgme6fsi9198dpmpg.apps.googleusercontent.com')
   options("googlesheets.webapp.client_secret" = 'bXyYWUThZN18tFWwSk0RYof4')
-  options("googlesheets.webapp.redirect_uri" = "http://127.0.0.1:4642")
+  options("googlesheets.webapp.redirect_uri" = "https://everettcarytrechter.shinyapps.io")
 #function signs a user into googlesheets
 
-loginToGoogle <- function(){
+#loginToGoogle <- function(){
+#  gs_webapp_auth_url(client_id = getOption("googlesheets.webapp.client_id"),
+#                     redirect_uri = getOption("googlesheets.webapp.redirect_uri"),
+#                     access_type = "online", approval_prompt = "force")
+#}
+  
+getGoogleSheet <- function(){
   gs_webapp_auth_url(client_id = getOption("googlesheets.webapp.client_id"),
                      redirect_uri = getOption("googlesheets.webapp.redirect_uri"),
                      access_type = "online", approval_prompt = "force")
-}
-  
-getGoogleSheet <- function(){
-  theSheet <- gs_key('1nlOrDIa8rW1-VzMhk7DlRUKYXA3d-b-dDeYpiM0rVfU')
+  theSheet <- gs_title("Dane County Sentencing")
   return(theSheet)
 }
 
@@ -24,18 +27,21 @@ writeToSheet <- function(input){
 }
 
 #server
-server <- function(input, output, session){
-  eventReactive(input$loginButton,{
-    loginToGoogle()
-    sheet <-getGoogleSheet()
-    output$words <- sheet$sheet_title
-    })
+server <- function(input, output){
+  text_reactive <- eventReactive(input$loginButton,{
+    sheet <- getGoogleSheet()
+    return(sheet$sheet_title)
+   })
+  #text_reactive <-eventReactive(input$helpbutton,{"HELLLP"})
+  #text output
+  output$text <- renderText({
+    text_reactive()
+  })
 }
 
 
 #ui
 ui <- fluidPage(
-  tags$head(tags$script(src = "message-handler.js")),
 #title
   titlePanel("Data Entry Form for Data Sentencing Project"),
   sidebarLayout(
@@ -45,7 +51,9 @@ ui <- fluidPage(
     ),
     #main panel - will show record before sending to google docs sheet
     mainPanel(
-      actionButton("loginButton","Log In to Google Sheets")
+      actionButton("loginButton","Log In to Google Sheets"),
+      actionButton("helpbutton","help"),
+      textOutput("text")
       )
   )
 )
