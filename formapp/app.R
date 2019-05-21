@@ -2,8 +2,24 @@ library(shiny)
 library(googlesheets)
 
 
-judges <- c("Flanagan, David T","Kawski, Clayton","Reynolds, Josann M","McNamara, Nichols J","Ehlke, Stephen E","Berz, Ellen K","Hanrahan, William","Hyland, John D","Hanson, Jason","Crawford, Susan M","O'Brien, Sarah B","Kaforsky, Jill J","Samuelson, Timothy C","Commissioner, First Appearance","Asmus, Brian")
-prosecutors <- c("Barnett, Paul L","McMiller, Tracy L ","Fallon, Thomas James JD ","Hilton, Stephanie R","Sattler, Rachel E","Larson, Cara J","Raymond, Andrea Beth ","Cogbill, Allison E","Liegel, Christopher Allen ","Quattromani, James Michael ","Wetjen, Chelsea E","Winter, Patrick","Hess, Daniel R ","Ozanne, Ismael R ","Brown, William Leroy ","Helmberger, Tim","Moeser, Matthew D ","Suleski, Justine L ","Jambois, Robert J ","Stephan, Corey","Miller, Jessica ","Kalser, Robert John Jr ","Hilton, Stephanie","Delain, Margaret ","Powell, Valerian ","Pierson, Bryce M ","Hanson, Erin","Hart, David A ","Khaleel, Awais ","Montano, Dallas B ","Keyes, Lexi","Rennicke, Rebekah M")
+judges <- sort(c("Flanagan, David T","Kawski, Clayton","Reynolds, Josann M","McNamara, Nichols J","Ehlke, Stephen E","Berz, Ellen K","Hanrahan, William","Hyland, John D","Hanson, Jason","Crawford, Susan M","O'Brien, Sarah B","Kaforsky, Jill J","Samuelson, Timothy C","Commissioner, First Appearance","Asmus, Brian"))
+prosecutors <- sort(c("Barnett, Paul L","McMiller, Tracy L ","Fallon, Thomas James JD ","Hilton, Stephanie R","Sattler, Rachel E","Larson, Cara J","Raymond, Andrea Beth ","Cogbill, Allison E","Liegel, Christopher Allen ","Quattromani, James Michael ","Wetjen, Chelsea E","Winter, Patrick","Hess, Daniel R ","Ozanne, Ismael R ","Brown, William Leroy ","Helmberger, Tim","Moeser, Matthew D ","Suleski, Justine L ","Jambois, Robert J ","Stephan, Corey","Miller, Jessica ","Kalser, Robert John Jr ","Hilton, Stephanie","Delain, Margaret ","Powell, Valerian ","Pierson, Bryce M ","Hanson, Erin","Hart, David A ","Khaleel, Awais ","Montano, Dallas B ","Keyes, Lexi","Rennicke, Rebekah M"))
+amended <- sort(c("940.225 (3m)",
+                  "947.01(1)",
+                  "940.235(1)",
+                  "940.225(2)(a)",
+                  "948.09",
+                  "940.225(3)",
+                  "941.30(2)",
+                  "813.125(7)",
+                  "947.0125(2)(f)",
+                  "940.19(1)"),
+                  "947.0125(2)(c)",
+                  "32.03")
+disposition <- sort(c("PleadAm","PleadOrg","Dism","GJuryTr","na","GCourtTr","DPA","Other"))
+ordered <- sort(c("ProbSW","ProbSI","Jail","Prison","Other","NA"))
+unitsofsentence <- sort(c("Days","Months"))
+typeofsentence <-sort(c("Prob","Prison","Ext Sup","Jail","Jail as Cond"))
 
   options("googlesheets.webapp.client_id" = '4205699659-mjppbfcc54tpt44qgme6fsi9198dpmpg.apps.googleusercontent.com')
   options("googlesheets.webapp.client_secret" = 'bXyYWUThZN18tFWwSk0RYof4')
