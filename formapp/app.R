@@ -1,5 +1,7 @@
 library(shiny)
+library(tidyverse)
 library(googlesheets)
+library(DT)
 
 epochTime <- function() {
   as.integer(Sys.time())
@@ -75,56 +77,57 @@ getGoogleSheet <- function(){
   return(theSheet)
 }
 
-#will append a data tibble to a google sheet
-writeToSheet <- function(input){
-  
-}
 
 #server
 server <- function(input, output){
   text_reactive <- eventReactive(input$loginButton,{
-    sheet <- getGoogleSheet()
-    #gs_edit_cells(sheet,ws=1, input = data.frame(1,2,3))
-    return(sheet$sheet_title)
-   })
-
-  #text output
-  # output$text <- renderText({
-  #   text_reactive()
-  # })
-
-
-  output$record <- renderTable({
-    data.frame(c(input$caseNo,
-      input$defendant,
-      input$race,
-      input$hispanicName,
-      input$judge,
-      input$prosecutor,
-      input$count,
-      input$outOf,
-      input$statute,
-      input$amended,
-      input$dispo,
-      input$ordered,
-      input$s1no,
-      input$s1unit,
-      input$s1type,
-      input$s1stayed,
-      input$s2no,
-      input$s2unit,
-      input$s2type,
-      input$s2stayed,
-      input$s3no,
-      input$s3unit,
-      input$s3type,
-      input$s3stayed,
-      input$s4no,
-      input$s4unit,
-      input$s4type,
-      input$s4stayed))
+   paste(unlist(strsplit(input$amended," ")),sep="",collapse ="|")
   })
   
+  table_reactive <- eventReactive(input$loginButton,{
+    sheet <- getGoogleSheet()
+    recordl <- recordList()
+    gs_add_row(sheet,ws=1, input = recordl)
+    return(tibble(recordl))
+   })
+  
+  recordList <-reactive({
+                  c(caseNo = input$caseNo,
+                  defendant = input$defendant,
+                  race = input$race,
+                  hispanic = input$hispanicName,
+                  judge = input$judge,
+                  prosecutor = input$prosecutor,
+                  count = input$count,
+                  outof = input$outOf,
+                  statute = input$statute,
+                  amended =  paste(unlist(strsplit(input$amended," ")),sep="",collapse ="|"),
+                  dispo = input$dispo,
+                  ordered = input$ordered,
+                  s1no = input$s1no,
+                  s1unit =input$s1unit,
+                  s1type = input$s1type,
+                  s1stayed = input$s1stayed,
+                  s2no = input$s2no,
+                  s2unit = input$s2unit,
+                  s2type= input$s2type,
+                  s2stayed= input$s2stayed,
+                  s3no= input$s3no,
+                  s3unit = input$s3unit,
+                  s3type = input$s3type,
+                  s3stayed = input$s3stayed,
+                  s4no = input$s4no,
+                  s4unit = input$s4unit,
+                  s4type = input$s4type,
+                  s4stayed = input$s4stayed)})
+  
+ output$record <- DT::renderDataTable({
+    table_reactive()
+  })
+  
+  output$text <- renderText({
+    text_reactive()
+    })
 }
 
 
@@ -166,9 +169,9 @@ ui <- fluidPage(
      ),
     #main panel - will show record before sending to google docs sheet
     mainPanel(
-      #actionButton("loginButton","Log In to Google Sheets"),
-      #textOutput("text"),
-      tableOutput('record')
+      actionButton("loginButton","Input to Google Sheets"),
+      textOutput("text"),
+      dataTableOutput('record')
       )
   )
 )
