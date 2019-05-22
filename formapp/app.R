@@ -80,19 +80,16 @@ getGoogleSheet <- function(){
 
 #server
 server <- function(input, output){
-  text_reactive <- eventReactive(input$loginButton,{
-   paste(unlist(strsplit(input$amended," ")),sep="",collapse ="|")
-  })
   
   table_reactive <- eventReactive(input$loginButton,{
     sheet <- getGoogleSheet()
     recordl <- recordList()
     gs_add_row(sheet,ws=1, input = recordl)
-    return(tibble(recordl))
+    return((recordl))
    })
   
   recordList <-reactive({
-                  c(caseNo = input$caseNo,
+                  tibble(caseNo = input$caseNo,
                   defendant = input$defendant,
                   race = input$race,
                   hispanic = input$hispanicName,
@@ -124,10 +121,7 @@ server <- function(input, output){
  output$record <- DT::renderDataTable({
     table_reactive()
   })
-  
-  output$text <- renderText({
-    text_reactive()
-    })
+
 }
 
 
@@ -170,7 +164,6 @@ ui <- fluidPage(
     #main panel - will show record before sending to google docs sheet
     mainPanel(
       actionButton("loginButton","Input to Google Sheets"),
-      textOutput("text"),
       dataTableOutput('record')
       )
   )
