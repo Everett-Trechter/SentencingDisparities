@@ -98,7 +98,7 @@ server <- function(input, output){
                   count = input$count,
                   outof = input$outOf,
                   statute = input$statute,
-                  amended =  paste(unlist(strsplit(input$amended," ")),sep="",collapse ="|"),
+                  amended =  paste(unlist(strsplit(ifelse(is.null(input$amended),"nothing",input$amended)," ")),sep="",collapse ="|"),
                   dispo = input$dispo,
                   ordered = input$ordered,
                   s1no = input$s1no,
