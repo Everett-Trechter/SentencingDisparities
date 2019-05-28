@@ -129,44 +129,55 @@ server <- function(input, output){
 ui <- fluidPage(
 #title
   titlePanel("Data Entry Form for Data Sentencing Project"),
-  sidebarLayout(
-    sidebarPanel(
+fluidRow(
       #inputs
-     textInput("caseNo","Case Number"),
-     textInput("defendant","Defendant Name"),
-     radioButtons("race","Race",c("AfAm","White")),
-     checkboxInput("hispanicName","Hispanic Seeming Name"),
-     selectInput("judge","Judge",judges),
-     selectInput("prosecutor","Prosecutor",prosecutors),
-     numericInput("count","Count",value = NULL),
-     numericInput("outOf","Out of", value = NULL),
-     selectInput("statute","Statute",statutes),
-     selectInput("amended","Amended To",amended,multiple = TRUE),
-     selectInput("dispo","Disposition",disposition),
-     selectInput("ordered","Ordered",orders),
-     numericInput("s1no","Sentence 1 Number", value = NULL),
-     selectInput("s1unit","Sentence 1 Units",unitsofsentence),
-     selectInput("s1type","Sentence 1 Type",typeofsentence),
-     checkboxInput("s1stayed","Sentence 1 Stayed?"),
-     numericInput("s2no","Sentence 2 Number", value = NULL),
-     selectInput("s2unit","Sentence 2 Units",unitsofsentence),
-     selectInput("s2type","Sentence 2 Type",typeofsentence),
-     checkboxInput("s2stayed","Sentence 2 Stayed?"),
-     numericInput("s3no","Sentence 3 Number", value = NULL),
-     selectInput("s3unit","Sentence 3 Units",unitsofsentence),
-     selectInput("s3type","Sentence 3 Type",typeofsentence),
-     checkboxInput("s3stayed","Sentence 3 Stayed?"),
-     numericInput("s4no","Sentence 4 Number", value = NULL),
-     selectInput("s4unit","Sentence 4 Units",unitsofsentence),
-     selectInput("s4type","Sentence 4 Type",typeofsentence),
-     checkboxInput("s4stayed","Sentence 4 Stayed?")
+    column(3,
+       textInput("caseNo","Case Number"),
+       textInput("defendant","Defendant Name"),
+       radioButtons("race","Race",c("AfAm","White")),
+       checkboxInput("hispanicName","Hispanic Seeming Name"),
+       selectInput("judge","Judge",judges),
+       selectInput("prosecutor","Prosecutor",prosecutors),
+       numericInput("count","Count",value = NULL),
+       numericInput("outOf","Out of", value = NULL),
+       selectInput("statute","Statute",statutes),
+       selectInput("amended","Amended To",amended,multiple = TRUE),
+       selectInput("dispo","Disposition",disposition),
+       selectInput("ordered","Ordered",orders)
+    ),
+    column(8,
+     fluidRow(
+       h4("Sentence 1"),
+       column(2,numericInput("s1no","Number", value = NULL)),
+       column(2,selectInput("s1unit","Units",unitsofsentence)),
+       column(2,selectInput("s1type","Type",typeofsentence)),
+       column(2,checkboxInput("s1stayed","Stayed?"))
      ),
-    #main panel - will show record before sending to google docs sheet
-    mainPanel(
-      actionButton("loginButton","Input to Google Sheets"),
-      dataTableOutput('record')
-      )
+    fluidRow(
+       h4("Sentence 2"),
+       column(2,numericInput("s2no","Number", value = NULL)),
+       column(2,selectInput("s2unit","Units",unitsofsentence)),
+       column(2,selectInput("s2type","Type",typeofsentence)),
+       column(2,checkboxInput("s2stayed","Stayed?"))
+    ),
+    fluidRow(
+      h4("Sentence 3"),
+       column(2,numericInput("s3no","Number", value = NULL)),
+       column(2,selectInput("s3unit","Units",unitsofsentence)),
+       column(2,selectInput("s3type","Type",typeofsentence)),
+       column(2,checkboxInput("s3stayed","Stayed?"))
+    ),
+     fluidRow(
+       h4("Sentence 4"),
+       column(2,numericInput("s4no","Number", value = NULL)),
+       column(2,selectInput("s4unit","Units",unitsofsentence)),
+       column(2,selectInput("s4type","Type",typeofsentence)),
+       column(2,checkboxInput("s4stayed","Stayed?"))
+     )),
+     actionButton("loginButton","Input to Google Sheets"),
+     dataTableOutput('record')
   )
+
 )
 
 shinyApp(ui = ui, server = server)
